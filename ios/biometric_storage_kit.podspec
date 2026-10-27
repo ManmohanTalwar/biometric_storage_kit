@@ -21,7 +21,7 @@ Biometric-protected secret storage for DartNative using iOS Keychain and Android
   s.source_files     = 'Classes/**/*.swift'
   s.swift_version    = '5.9'
   s.platform = :ios, '15.0'
-  s.frameworks       = 'Foundation', 'UIKit'
+  s.frameworks       = 'Foundation', 'UIKit', 'Security', 'LocalAuthentication'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
 end
