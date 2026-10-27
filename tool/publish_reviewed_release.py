@@ -18,6 +18,7 @@ import urllib.request
 from prepare_release import contents, sha
 
 API = 'https://dartpub.dev'
+USER_AGENT = 'biometric_storage_kit-release/0.1.0'
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -74,7 +75,8 @@ def main():
     opener = urllib.request.build_opener(NoRedirect)
     check_url = API + '/api/plugins/check-name?owner=' + fields['owner'] + '&name=' + fields['name']
     try:
-        response = opener.open(check_url, timeout=30)
+        response = opener.open(urllib.request.Request(
+            check_url, headers={'User-Agent': USER_AGENT}), timeout=30)
         response.close()
         raise ValueError('Plugin must be registered before publishing')
     except urllib.error.HTTPError as error:
@@ -91,6 +93,7 @@ def main():
                args.binary.read_bytes(), f'\r\n--{boundary}--\r\n'.encode()]
     request = urllib.request.Request(API + '/api/plugins/publish', data=b''.join(chunks),
         headers={'Authorization': 'Bearer ' + token, 'Origin': API,
+                 'User-Agent': USER_AGENT,
                  'Content-Type': 'multipart/form-data; boundary=' + boundary}, method='POST')
     try:
         with opener.open(request, timeout=120) as response:
