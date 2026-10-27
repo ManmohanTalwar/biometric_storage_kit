@@ -1,7 +1,7 @@
 {
   "package": "biometric_storage_kit",
   "version": "0.1.0",
-  "published": false,
+  "published": true,
   "release_scope": "Initial release; physical Android and destructive iOS security-setting checks excluded by explicit user decision",
   "prebuilt_android_restarts": {
     "apk_sha256": "c24ec46c16644908ade2816d9b349427d2d7b993129e8b0c7214978f48020c67",
@@ -133,7 +133,82 @@
     "utc": "2026-10-27T11:40:32.654804Z"
   },
   "user_observation": "PASS with one Face ID prompt",
-  "registry_consumer": "Pending",
+  "registry_consumer": {
+    "dependency": "biometric_storage_kit hosted at https://dartpub.dev, ^0.1.0 resolved 0.1.0",
+    "fresh_caches_before_install": true,
+    "native_fetch_observed": true,
+    "plugin_local_overrides": false,
+    "framework_source": "Installed SDK injection, as expected",
+    "native_source_present": false,
+    "android_release_build": true,
+    "ios_release_build_unsigned": true,
+    "ios_release_ffi_exports": [
+      "DNBiometricStorageKitInitialize",
+      "DNBiometricStorageKitRequest",
+      "DNBiometricStorageKitCancel"
+    ],
+    "android_runtime": {
+      "mode": "Release with R8",
+      "apk_sha256": "ddb927755cc65229b14faf9131c3755b03d65f37cb9fdd59c4c2e690e903c6f4",
+      "outcomes": [
+        {
+          "case": "availability",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:33:38.149471Z"
+        },
+        {
+          "case": "initial-absence",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:33:38.329297Z"
+        },
+        {
+          "case": "write",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:33:41.187479Z"
+        },
+        {
+          "case": "read",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:33:43.070211Z"
+        },
+        {
+          "case": "delete-and-absence",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:33:43.122036Z"
+        }
+      ]
+    },
+    "ios_simulator_runtime": {
+      "mode": "Debug iOS 26.5 simulator; ad hoc signing with simulated Keychain identity",
+      "executable_sha256": "696e2e68bbda6a041aa7df3d87f1e0b68b1f90ffa345d13f4ef9b5c54b720237",
+      "outcomes": [
+        {
+          "case": "availability",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:38:44.296827Z"
+        },
+        {
+          "case": "initial-absence",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:38:44.328147Z"
+        },
+        {
+          "case": "delete-and-absence",
+          "passed": true,
+          "error": null,
+          "utc": "2026-10-27T12:38:44.334100Z"
+        }
+      ],
+      "boundary": "Availability and absent-item read/delete transport only; no biometric enforcement claim"
+    }
+  },
   "artifacts": {
     "package": "biometric_storage_kit",
     "version": "0.1.0",
@@ -153,6 +228,28 @@
       "biometric_storage_kit-0.1.0/ios/biometric_storage_kit.xcframework/ios-arm64/libbiometric_storage_kit.a": "c3d5aa61c1d4daadbed2a06a7afb3c1fe5130b183ace19172955a42c1e6e0351",
       "biometric_storage_kit-0.1.0/ios/biometric_storage_kit.xcframework/ios-arm64_x86_64-simulator/libbiometric_storage_kit.a": "bfdc39aa22e836e0f563807aef520c1d12e109e8884034da81157822f720e4cd"
     },
-    "published": false
+    "published": true
+  },
+  "published_at": "2026-10-27T12:31:12.738009+00:00",
+  "registry": {
+    "listing": "https://dartpub.dev/plugins/biometric_storage_kit",
+    "repository": "https://github.com/ManmohanTalwar/biometric_storage_kit",
+    "owner": "ManmohanTalwar",
+    "license": "Apache-2.0",
+    "version": "0.1.0",
+    "uploaded_source_sha256": "01fb6e16df35b9e9e1d07678275b0f9b380d9142cdd459e2b63656b9d9628b45",
+    "served_source_sha256": "2d3d0953672446f6cb9cf023e21cda5daa81b4cbf95146525d67fdcbf0a2ff36",
+    "source_transform": "Only pubspec.yaml changed: removed closed dartnative dependency and dev_dependencies, reformatted YAML/comments. All other parsed fields, Dart bindings, README, changelog, licence and notices match upload.",
+    "downloaded_native_sha256": "88f73250318b8c5dbc2983e0a0d01bed23243461470dd59b85d347f48d8b2118",
+    "downloaded_native_exact_match": true,
+    "installed_native_payloads_exact_match": true,
+    "hosted_and_native_receipts_match": true,
+    "license_correction_preserved": true,
+    "manifest_third_party_licenses_preserved": true,
+    "readme_exact_match": true,
+    "ios_gif_http": 200,
+    "android_gif_http": 200,
+    "example_and_changelog_present": true,
+    "runtime_label_limit": "Registry labels runtime_min DartNative >= 3.0; actual validated SDK is DartNative 1.4.0. No claim of untested SDK compatibility."
   }
 }

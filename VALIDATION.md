@@ -6,8 +6,9 @@ qualification, explicitly accepted by the user. Public source is at
 integrate with Orb or qualify a production migration. Native source is at
 `096f9cc`; later qualification fixtures and receipts are under
 [qualification](qualification/README.md). Production native code is unchanged.
-Final catalogue upload and downloaded-consumer results are recorded separately
-below and in [the release receipt](docs/release-0.1.0.json).
+Published on [Dartpub](https://dartpub.dev/plugins/biometric_storage_kit) on
+2026-10-27. Catalogue and downloaded-consumer results are recorded below and in
+[the release receipt](docs/release-0.1.0.json).
 
 ## Environment
 
@@ -234,9 +235,46 @@ Three read-only reviewers covered Android/R8, iOS/artifact equivalence, and
 publication/source coherence; findings were independently closed. Reviewer
 elapsed/token telemetry is unavailable.
 
-Catalogue upload and clean downloaded-consumer checks are pending at this
-pre-publication checkpoint. No claim of registry publication follows from the
-local build or website registration alone.
+### Publication and fresh registry consumer
+
+Publication completed on 2026-10-27 after the user accepted the publishing
+agreement. The public native download is byte-identical to the reviewed archive:
+`88f73250318b8c5dbc2983e0a0d01bed23243461470dd59b85d347f48d8b2118`.
+The public listing reports version 0.1.0, Apache-2.0 and the correct owner/repository.
+README matches source, both GIF URLs return HTTP 200, and example/changelog content
+is present. The repository retains incremental implementation and release commits.
+
+The registry rewrites only the source archive's pubspec: it removes the closed
+DartNative dependency and development dependencies and reformats YAML/comments.
+The resulting source checksum is
+`2d3d0953672446f6cb9cf023e21cda5daa81b4cbf95146525d67fdcbf0a2ff36`,
+which matches the public Pub API. Every other parsed pubspec field and every
+other file match the uploaded source. Do not describe the two source archives as
+byte-identical. The installed SDK injects its framework packages as expected.
+
+A newly generated consumer resolved the explicit hosted `^0.1.0` dependency to
+0.1.0. Plugin caches were absent before this installation, native-fetch output
+was captured, and both cache receipts match the reviewed native checksum. Its
+plugin resolves to the hosted cache with no local plugin override or native
+source; installed native payloads match the downloaded archive. Apache licence,
+contributor attribution, linker settings and Maven licence metadata survived.
+
+- Android Release with R8 built and ran on the dedicated API 34 emulator.
+  Five fresh outcomes passed: availability call, initial absence, authenticated
+  Unicode write/read, and delete/absence.
+- iOS arm64 Release built without signing and retained all three FFI entry
+  points. CocoaPods resolves the downloaded 0.1.0 XCFramework. This is a
+  compile/link result, not another physical-device run.
+- A separately signed Debug build on the dedicated iOS 26.5 simulator passed
+  availability, missing read and delete/absence through the downloaded library.
+  Xcode expanded the simulator-only Keychain identity into simulated entitlements;
+  this is native transport evidence, not biometric-enforcement evidence.
+
+The exact fixture is in [registry consumer](qualification/registry_consumer/README.md).
+Three read-only review lenses verified publication/installation, Android release
+artifacts, and iOS linking. No blocking findings remained. The registry's generic
+`runtime_min` label says DartNative >= 3.0; the actual tested SDK remains 1.4.0.
+This registry label is not a compatibility claim made by this package.
 
 ## Reproduce / remaining gates
 
@@ -261,10 +299,6 @@ Still required before production migration/release qualification:
 - Process death during mutation, storage-full/I/O failure, crash/power-loss
   durability, repeated native host/isolate recreation and full prompt teardown
   interleavings. Cross-process use is not supported/qualified.
-- Clean registry download/consumer verification remains pending until publication;
-  local prebuilt Release/minifier checks passed above.
-- Catalogue upload and final public version/checksum verification. Repository
-  delivery and publication are authorized; README document/media URLs are public.
 
 No default secret rotation, legacy deletion or wallet migration is performed. `device_keys_kit` remains an optional separate signing capability,
 not a dependency of this package.
