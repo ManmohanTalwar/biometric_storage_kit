@@ -1,62 +1,69 @@
-# biometric_storage_kit_example
+# Synthetic biometric storage example
 
-A **DartNative** app, made by `dn create`.
+No account, real secret, Orb asset, or private data is needed. Use dedicated clean
+devices. Store, read and delete operate only on this example's synthetic record.
 
-## Run it
+## Build
 
-```sh
-dn pub get
-dn run -d <device-id>
-```
-
-DartNative apps need a licence. Subscribe at
-[dartpub.dev/framework](https://dartpub.dev/framework), copy your licence key
-(`dnk_...`) from the Framework panel, and set it once:
+Run `dn pub get` in the package and example, using DartNative 1.4.0. Android:
 
 ```sh
-dn config --license-key dnk_...
+dn build apk --debug
 ```
 
-After that, `dn run` works on every platform. If you prefer not to store the
-key, pass it on each run instead: `dn run --dart-define=DN_LICENSE_KEY=dnk_...`.
+Install that APK only on the intended emulator. Enroll a synthetic fingerprint
+through Android Settings and use the emulator's fingerprint controls. Always
+select the device explicitly when installing, recording or sending a match.
 
-Use **`dn`** for every run, build and package command.
+For iOS, the example includes simulator-only Keychain entitlements. A
+`--no-codesign` build lacks the identity needed for Keychain and fails with -34018.
+After `dn build ios --simulator --debug --no-codesign` prepares the build inputs,
+perform a locally signed simulator build:
 
-## Make it yours
+```sh
+# DN_SDK_ROOT is your installed DartNative SDK; DEMO_UDID is the clean simulator.
+cd ios
+xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Debug \
+  -sdk iphonesimulator -destination "platform=iOS Simulator,id=$DEMO_UDID,arch=arm64" \
+  FLUTTER_ROOT="$DN_SDK_ROOT" CODE_SIGN_IDENTITY=- \
+  CODE_SIGNING_ALLOWED=YES CODE_SIGNING_REQUIRED=YES
+```
 
-- **Your UI**: edit `lib/main.dart`.
-- **App icon and launch screen**: add `dartnative_splash: ^1.0.0` under
-  `dependencies` in `pubspec.yaml`, and this section at the end of the file
-  (the launch screen's colour and image; the plugin's page on dartpub.dev
-  lists the other settings):
-  ```yaml
-  dartnative_splash:
-    background_color: "#000000"
-    image: assets/dn-logo.png
-  ```
-  Run `dn pub get`. Replace `assets/dn-logo.png` with your logo (at least
-  1024×1024 pixels), then make the icon and the launch screen in one step:
-  ```sh
-  dn pub run tool/generate_app_assets.dart --source=assets/dn-logo.png --bg=#000000
-  ```
-  `--bg` is the icon's background colour. To remake only the launch screen:
-  `dn run-tool dartnative_splash:setup`.
-- **Packages and plugins**: browse [dartpub.dev](https://dartpub.dev). Add a
-  package to `pubspec.yaml` in the form its page shows, run `dn pub get`, and
-  import it. Pure-Dart packages from pub.dev work as they are.
-- **Generated code** (json_serializable, freezed, Hive adapters): add
-  `build_runner` and the generator under `dev_dependencies`, then run
-  `dn pub run build_runner build`.
+Install the resulting Xcode build product, not the earlier unsigned product.
+No developer account, real team identifier or provisioning update is needed for
+this simulator path. Physical devices require normal real signing; simulator
+entitlements are conditionally excluded from device builds. Enable simulated
+Face ID in Simulator's Features menu. Simulated enrollment is not physical proof.
 
-## The native app files
+## Checks
 
-`ios/Runner/AppDelegate.swift`, `ios/Runner/SceneDelegate.swift`, and
-`Application.kt` and `MainActivity.kt` under `android/app/src/main/kotlin/`
-are empty classes. Each one inherits from a DartNative class that starts the
-app, so there is nothing in them to keep in step. Add native code there when
-you need it, and call the parent class's version of any method you override.
+- `Check immediate cancellation`: delete an isolated synthetic probe record,
+  request a write and dispose in the same Dart turn, then verify cancellation
+  and absence. No prompt or write should occur.
+- Store and read the Unicode demo value. Every read/write needs authentication.
+- Cancel a read: no new value should appear. Cancel a replacement: the existing
+  stored value must remain. Read again with authentication to verify it.
+- Background during a prompt, resume, and perform a fresh operation.
 
-Two settings the app relies on: the scene section in `ios/Runner/Info.plist`,
-which tells iOS to use `SceneDelegate`, and `LaunchTheme` in
-`android/app/src/main/res/values*/styles.xml`, which the Android manifest
-gives the app's screen.
+Build with `--dart-define=BIOMETRIC_TEST_PROBES=true` to reveal two extra controls:
+worker-isolate rejection plus 100 main-isolate dispatcher refreshes during a
+pending read, and timed prompt cancellation followed by an immediate second
+instance request. These controls are hidden from the normal README demo.
+
+After storing the synthetic record through the actual Android plugin, build and
+run `KeystoreEnforcementTest` on that same emulator. The test inspects production
+key policy, attempts unauthenticated crypto, and checks ciphertext is unchanged:
+
+```sh
+cd android
+FLUTTER_STORAGE_BASE_URL=https://cdn.dartnative.com \
+  ./gradlew :app:assembleDebugAndroidTest
+# Install the test APK with adb -s "$DEMO_SERIAL" install -r -t <test-apk>.
+adb -s "$DEMO_SERIAL" shell am instrument -w \
+  -e class dev.dnplugins.biometric_storage_kit_example.KeystoreEnforcementTest \
+  dev.dnplugins.biometric_storage_kit_example.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+Do not run these against an app or device containing real user secrets. The test
+requires an enrolled API 30+ emulator/device and a record already created by the
+plugin. It does not stand in for physical hardware or upgrade qualification.

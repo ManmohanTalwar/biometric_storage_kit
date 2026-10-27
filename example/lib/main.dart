@@ -1,72 +1,187 @@
+import 'dart:async';
+import 'dart:isolate';
 import 'package:dartnative/dartnative.dart';
 import 'package:biometric_storage_kit/biometric_storage_kit.dart';
-
 import 'dartnative_plugin_registrant.dart';
 
 void main() {
-  // Platform bindings + (once you add plugins) their FFI symbols. Keep this
-  // as the FIRST line of main() — see lib/dartnative_plugin_registrant.dart.
   DartNativePluginRegistrant.registerAll();
-  // App-wide system chrome default for the white template: dark status-bar
-  // icons over the light background, transparent strips. Screens can override
-  // in initState; the navigator restores this default on pop.
-  SystemChrome.defaultStyle = const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.light,
-    statusBarIconBrightness: Brightness.dark,
-    systemNavigationBarColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.dark,
-  );
-  runApp(const HomeScreen());
+  runApp(const BiometricDemo());
 }
 
-/// Starter screen — replace this with your own UI.
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class BiometricDemo extends StatefulWidget {
+  const BiometricDemo({super.key});
+  @override
+  State<BiometricDemo> createState() => _BiometricDemoState();
+}
+
+class _BiometricDemoState extends State<BiometricDemo> {
+  final storage = BiometricStorage(namespace: 'public-demo');
+  String status = 'Ready';
+  String result = 'No secret read';
+  bool busy = false;
+  static const demoValue = 'Demo secret • नमस्ते';
+  Future<void> run(Future<void> Function() action) async {
+    if (busy) return;
+    setState(() {
+      busy = true;
+      status = 'Waiting…';
+    });
+    try {
+      await action();
+    } on BiometricStorageException catch (error) {
+      status =
+          'Result: ${error.code}${error.nativeCode == null ? '' : ' (${error.nativeCode})'}';
+    } catch (_) {
+      status = 'Operation failed';
+    } finally {
+      if (mounted) setState(() => busy = false);
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {
-    // One call into the plugin's native code, on both platforms. The
-    // registrant bound the function before runApp; see
-    // ../lib/src/biometric_storage_kit_bindings.dart.
-    final String platform = BiometricStorageKit().platformVersion();
-    return Scaffold(
-      // White-by-design screen: declare the light trait so system materials
-      // (keyboard, glass) stay light even when the device is in Dark Mode.
-      brightness: Brightness.light,
-      appBar: AppBar(
-        title: const Text('DartNative'),
-        // No backgroundColor: on iOS 26 this is the fully CLEAR glass bar
-        // (the system scroll-edge ramp keeps it legible); elsewhere the
-        // platform's default light bar over the white screen.
-      ),
-      backgroundColor: const Color(0xFFFFFFFF),
-      body: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              '👋  Welcome to DartNative',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
+  void dispose() {
+    storage.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('Biometric storage')),
+    body: Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          const Text('Synthetic data only'),
+          Text(status),
+          Text(result),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () => run(() async {
+              status =
+                  'Biometrics: ${(await storage.checkAvailability()).name}';
+            }),
+            child: const Text('Check biometrics'),
+          ),
+          ElevatedButton(
+            onPressed: () => run(() async {
+              await storage.write('demo-secret', demoValue);
+              status = 'Demo secret stored';
+            }),
+            child: const Text('Store demo secret'),
+          ),
+          ElevatedButton(
+            onPressed: () => run(() async {
+              result = 'No secret read';
+              final value = await storage.read('demo-secret');
+              result = value == null
+                  ? 'No secret stored'
+                  : value == demoValue
+                  ? 'Verified: नमस्ते'
+                  : 'Value differs';
+              status = 'Read complete';
+            }),
+            child: const Text('Read demo secret'),
+          ),
+          ElevatedButton(
+            onPressed: () => run(() async {
+              await storage.delete('demo-secret');
+              result = 'No secret read';
+              status = 'Demo secret deleted';
+            }),
+            child: const Text('Delete demo secret'),
+          ),
+          ElevatedButton(
+            onPressed: () => run(() async {
+              final probe = BiometricStorage(namespace: 'cancellation-demo');
+              await probe.delete('probe');
+              final pending = probe.write('probe', 'Never persist this');
+              probe
+                  .dispose(); // Same Dart turn, before native queue activation.
+              try {
+                await pending;
+                status = 'FAILED: cancellation ignored';
+              } on BiometricStorageException catch (error) {
+                final verifier = BiometricStorage(
+                  namespace: 'cancellation-demo',
+                );
+                try {
+                  final absent = await verifier.read('probe') == null;
+                  status = error.code == 'cancelled' && absent
+                      ? 'Immediate cancel verified'
+                      : 'FAILED: cancellation check';
+                } finally {
+                  verifier.dispose();
+                }
+              }
+            }),
+            child: const Text('Check immediate cancellation'),
+          ),
+          if (const bool.fromEnvironment('BIOMETRIC_TEST_PROBES')) ...[
+            ElevatedButton(
+              onPressed: () => run(() async {
+                final pending = storage.read('demo-secret');
+                // Invoke the real C entry point off-main while the read owns a
+                // prompt, then refresh repeatedly from the living main isolate.
+                final rejected = await Isolate.run(() {
+                  try {
+                    BiometricStorageKitBindings.loadSymbols();
+                    return false;
+                  } on BiometricStorageException catch (error) {
+                    return error.code == 'unsupported_runtime';
+                  }
+                });
+                for (var i = 0; i < 100; i++) {
+                  BiometricStorageKitBindings.loadSymbols();
+                }
+                final value = await pending;
+                status = rejected && value == demoValue
+                    ? 'Worker rejection verified'
+                    : 'FAILED: worker check';
+              }),
+              child: const Text('Verify worker rejection'),
             ),
-            const SizedBox(height: 10),
-            Text(
-              'Running on $platform',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Edit lib/main.dart to build your app. '
-              'See README.md to swap the app icon / splash logo, '
-              'and dartpub.dev for plugins.',
-              textAlign: TextAlign.center,
+            ElevatedButton(
+              onPressed: () => run(() async {
+                final observer = BiometricStorage(namespace: 'public-demo');
+                final pending = storage.write(
+                  'demo-secret',
+                  'Replacement must not persist',
+                );
+                final next = Completer<bool>();
+                Timer(const Duration(seconds: 2), () async {
+                  storage.cancelPending();
+                  try {
+                    await observer.checkAvailability();
+                    next.complete(true);
+                  } on BiometricStorageException catch (error) {
+                    next.complete(error.code == 'busy');
+                  } catch (_) {
+                    next.complete(false);
+                  }
+                });
+                var cancelled = false;
+                try {
+                  await pending;
+                } on BiometricStorageException catch (error) {
+                  cancelled = error.code == 'cancelled';
+                }
+                final ownership = await next.future;
+                // The user taps Read next and authenticates to check preservation.
+                observer.dispose();
+                status = cancelled && ownership
+                    ? 'Prompt cancellation verified'
+                    : 'FAILED: prompt check';
+              }),
+              child: const Text('Verify prompt cancellation'),
             ),
           ],
-        ),
+          ElevatedButton(
+            onPressed: storage.cancelPending,
+            child: const Text('Cancel operation'),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

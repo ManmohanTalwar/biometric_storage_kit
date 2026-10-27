@@ -1,26 +1,69 @@
 // GENERATED FILE — DO NOT EDIT BY HAND.
 //
-// Scaffolded by `dn create` and regenerated on every `dn pub get` to load the
-// FFI symbols of your dartnative_* plugins (see FlutterProject.injectPlugins →
-// _writeDartNativePluginRegistrant in the dn tool). Adding or removing a
-// dartnative_* dependency updates this file automatically — no manual step.
+// Regenerated automatically on `dn pub get` / `dn create` whenever the set of
+// DartNative plugins changes. `registerAll()` selects the platform bindings
+// AND loads every plugin's FFI symbols, so `main()` needs only:
+//
+//   void main() {
+//     DartNativePluginRegistrant.registerAll();
+//     runApp(const MyApp());
+//   }
 //
 // To hand-own this file, delete the header line above; the CLI then stops
 // overwriting it.
+//
+// Plugins loaded:
+//   • biometric_storage_kit
+
 import 'dart:io' show Platform;
 
 import 'package:dartnative/dartnative.dart';
 import 'package:dartnative_ios/dartnative_ios.dart';
 import 'package:dartnative_android/dartnative_android.dart';
+import 'package:biometric_storage_kit/biometric_storage_kit.dart';
 
 abstract final class DartNativePluginRegistrant {
-  /// Registers the platform bindings and loads every dartnative_* plugin's FFI
-  /// symbols. Call once as the first line of `main()`, before [runApp].
+  /// Registers the platform bindings and loads every DartNative plugin's
+  /// FFI symbols. Call once as the first line of `main()`, before `runApp`.
   static void registerAll() {
+    const dnLicenseToken = String.fromEnvironment('DART_NATIVE_LICENSE_TOKEN');
+    if (dnLicenseToken.isNotEmpty) {
+      DartNativeLicense.instance.provideToken(dnLicenseToken);
+    }
+    const dnLicenseKey = String.fromEnvironment('DN_LICENSE_KEY');
+    if (dnLicenseKey.isNotEmpty) {
+      DartNativeLicense.instance.provideLicenseKey(dnLicenseKey);
+    }
+    const dnTrialEnded = bool.fromEnvironment('DN_TRIAL_ENDED');
+    if (dnTrialEnded) {
+      DartNativeLicense.instance.noteTrialEnded();
+    }
+    DartNativeLicense.instance.reportPluginUsage(const <String>[
+      'biometric_storage_kit',
+    ]);
     registerNativeBindings(
       Platform.isAndroid
           ? AndroidNativeBindings.instance
           : IOSNativeBindings.instance,
     );
+    _load('biometric_storage_kit', () {
+      BiometricStorageKitBindings.loadSymbols();
+    });
+  }
+
+  /// Loads one plugin's FFI symbols, turning a missing native side into a
+  /// message that names the fix.
+  static void _load(String plugin, void Function() load) {
+    try {
+      load();
+    } catch (e) {
+      dnLog(
+        '[dartnative] $plugin: its native symbols are not in this build.\n'
+        '  iOS:     run `pod install` in ios/, then rebuild.\n'
+        '  Android: rebuild so the plugin library is packaged.\n'
+        '  The app keeps going; this plugin will not work until then.\n'
+        '  $e',
+      );
+    }
   }
 }

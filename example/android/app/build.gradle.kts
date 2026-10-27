@@ -23,6 +23,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "dev.dnplugins.biometric_storage_kit_example"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // You can update the following values to match your application needs.
         minSdk = dartnative.minSdkVersion
         targetSdk = dartnative.targetSdkVersion
@@ -44,6 +45,8 @@ dartnative {
 }
 
 dependencies {
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
     // dartnative MainActivity extends DartNativeActivity (AppCompat-based);
     // com.dartnative.* classes come transitively from the dartnative_android
     // dependency via the plugin auto-inclusion.

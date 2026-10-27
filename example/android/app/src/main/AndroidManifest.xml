@@ -3,7 +3,7 @@
          need it, and so does any request the app makes. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="biometric_storage_kit_example"
+        android:label="Biometric Storage Kit"
         android:name=".Application"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -148,7 +148,7 @@ final class BiometricStorage {
     await _perform('delete', _payload(name, const BiometricPromptOptions()));
   }
 
-  /// Read-only import source for biometric_storage 5.x, under the SAME signed app
+  /// Read-only import source for biometric_storage 5.0.1, under the SAME signed app
   /// identity and original name. Existing OS protection is preserved. Never
   /// deletes or rewrites the legacy record. Does not certify upgrade continuity.
   Future<String?> readLegacyFlutter(
