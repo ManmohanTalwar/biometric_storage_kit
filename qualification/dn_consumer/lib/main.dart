@@ -91,6 +91,45 @@ class _UpgradeState extends State<UpgradeQualification> {
           });
           return;
         }
+        if (const String.fromEnvironment('QUALIFICATION_PHASE') == 'release') {
+          const name = 'release-mutation-probe';
+          const value = 'Synthetic release record • 🔐';
+          if (!await run('release-clean-start', () async {
+            require(await storage.read(name) == null);
+          }))
+            return;
+          if (!await run('release-write', () => storage.write(name, value)))
+            return;
+          if (!await run('release-read', () async {
+            require(await storage.read(name) == value);
+          }))
+            return;
+          // Host stops supplying fingerprints until the cancellation outcome.
+          print('BIOQUAL_WAIT_CANCEL');
+          await Future<void>.delayed(const Duration(seconds: 2));
+          if (!await run(
+            'release-cancel-replacement',
+            () => cancelled(
+              () => storage.write(name, 'Must never replace release record'),
+            ),
+          ))
+            return;
+          if (!await run('release-retained-read', () async {
+            require(await storage.read(name) == value);
+          }))
+            return;
+          if (!await run('release-delete', () async {
+            await storage.delete(name);
+            require(await storage.read(name) == null);
+          }))
+            return;
+          await run('release-legacy-preserved', () async {
+            require(
+              await storage.readLegacyFlutter(fixtureName) == fixtureValue,
+            );
+          });
+          return;
+        }
         if (!await run('isolation-before-copy', isolation)) return;
         for (var i = 0; i < 3; i++) {
           if (!await run('copy-step-$copyStep', copyNext)) return;

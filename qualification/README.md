@@ -90,3 +90,14 @@ legacy records and the already copied new record, then returns before any
 isolation precondition or write. Stop and relaunch that same installed artifact
 and repeat the reads. Use a fresh receipt segment for each launch; never count
 an old outcome line as a new completion.
+
+For Release mutation checks on the dedicated emulator, use
+`--dart-define=QUALIFICATION_PHASE=release` alongside autorun. It first reads all
+three original records, then uses a separate `release-mutation-probe` record.
+Require initial absence; authenticate write/read, stop supplying fingerprints at
+`BIOQUAL_WAIT_CANCEL`, and resume only after `release-cancel-replacement` passes.
+The timer must cancel with the exact `cancelled` code. The next read must retain
+the original value, explicit deletion must yield absence, and the legacy record
+must still read exactly. The probe never rewrites legacy records or the migration
+copy. Release apps are not debuggable: collect fresh process-filtered stdout
+outcomes instead of assuming `run-as` can read their private temporary files.
