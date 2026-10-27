@@ -1,0 +1,44 @@
+name: biometric_storage_kit
+description: "Biometric-protected secret storage for DartNative using iOS Keychain and Android Keystore."
+version: 0.1.0-dev.1
+publish_to: none
+
+environment:
+  sdk: ^3.12.0-192.0.dev
+
+# Plain version deps: `dn pub get` resolves DartNative packages from the
+# installed SDK, with no registry setup and no network.
+dependencies:
+  dartnative: ^1.0.0
+  ffi: ^2.1.4
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0
+
+# What makes this package a DartNative plugin. `dn pub get` reads this block
+# from every dependency of an app.
+#
+#   plugin      Which platforms carry native code. On iOS the Swift under
+#               ios/Classes is compiled into the app, and its @_cdecl
+#               functions are found by name. On Android the class named here
+#               is registered when the engine starts; its one job is to load
+#               the plugin's shared library before any Dart runs.
+#   registrant  The import and the call the app's generated
+#               lib/dartnative_plugin_registrant.dart makes on startup, so
+#               the native functions are bound before runApp.
+#
+# Only `plugin` and `registrant` may appear under `dartnative:`.
+dartnative:
+  plugin:
+    platforms:
+      ios:
+        ffiPlugin: true
+      android:
+        package: dev.dnplugins.biometric_storage_kit
+        pluginClass: BiometricStorageKitPlugin
+  registrant:
+    imports:
+      - package:biometric_storage_kit/biometric_storage_kit.dart
+    calls:
+      - BiometricStorageKitBindings.loadSymbols();

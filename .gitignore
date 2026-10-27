@@ -1,0 +1,72 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+*.swo
+*~
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# OS noise
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# DartNative/Dart/Pub related
+# A library does not commit its pubspec.lock; the app that uses it resolves.
+/pubspec.lock
+**/doc/api/
+.dart_tool/
+.dn-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# What `dn plugin build` and `dn publish` write.
+/dist/
+
+# Secrets: environment files and keys must never be committed.
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.mobileprovision
+
+# Xcode per-developer UI state
+*.xcuserstate
+
+# Machine-generated/native build inputs
+**/.gradle/
+**/.cxx/
+**/build/
+**/local.properties
+**/*.iml
+**/.idea/
+**/.dn-plugins-dependencies
+**/pubspec_overrides.yaml
+**/dn_plugins.lock
+**/.dnkeys*
+**/dn_license.json
+**/Generated.xcconfig
+**/dn_export_environment.sh
+**/DartNativeCore.podspec

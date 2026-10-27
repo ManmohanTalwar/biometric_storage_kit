@@ -1,0 +1,66 @@
+// The Android module of biometric_storage_kit. An app that depends on this plugin
+// builds it as a subproject: `dn pub get` lists it in the app's
+// .dn-plugins-dependencies. `dn plugin build` reads this file too, so keep
+// it Groovy (build.gradle), not Kotlin script.
+
+group 'dev.dnplugins.biometric_storage_kit'
+version '0.1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.11.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20'
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'dev.dnplugins.biometric_storage_kit'
+    compileSdkVersion 36
+    // NDK r28 and later align shared libraries to 16 KB pages, which Google
+    // Play requires on Android 15 and later.
+    ndkVersion "28.2.13676358"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 26
+        // 64-bit only, like the framework's own Android library and the
+        // apps `dn` builds by default: a 32-bit copy of this plugin's library
+        // would never be loaded, only carried.
+        ndk {
+            abiFilters 'arm64-v8a', 'x86_64'
+        }
+    }
+
+    // The C++ bridge under src/main/cpp, built into libbiometric_storage_kit.so.
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+            version "3.22.1"
+        }
+    }
+}
+
+dependencies {
+    // @Keep, so the bridge's methods survive shrinking: the C++ side finds
+    // them by name.
+    implementation 'androidx.annotation:annotation:1.7.1'
+}
