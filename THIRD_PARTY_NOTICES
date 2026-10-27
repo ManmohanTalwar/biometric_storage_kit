@@ -13,6 +13,20 @@ new implementation is original. Its MIT licence is retained below. Its Android
 CryptographyManager reference additionally credits the Android Open Source Project
 under Apache-2.0 (see LICENSE). No private Orb implementation is copied.
 
+Android native dependencies are resolved by the consuming application and are
+not bundled into this plugin's AAR:
+
+- androidx.annotation:annotation:1.7.1 — Apache-2.0.
+  https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.7.1/annotation-1.7.1.pom
+- androidx.biometric:biometric:1.1.0 — Apache-2.0.
+  https://dl.google.com/dl/android/maven2/androidx/biometric/biometric/1.1.0/biometric-1.1.0.pom
+
+Copyright The Android Open Source Project. The full Apache-2.0 licence accompanies
+this package in LICENSE. These are direct declarations, not a fixed list of all
+transitive versions selected by a consuming app. The Dart ffi dependency is
+resolved separately under its own BSD-3-Clause licence; the DartNative runtime
+is supplied by the consuming developer's licensed SDK, not this plugin.
+
 MIT License
 
 Copyright (c) 2019 Herbert Poul (@hpoul)

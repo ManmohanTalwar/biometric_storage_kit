@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-dev.1
+## 0.1.0
 
 - Add bounded UTF-8 secret storage with typed errors, cancellation and disposal.
 - Protect iOS records with passcode-set, device-only Keychain access and current-set biometrics.
@@ -13,6 +13,7 @@
   restart checks, and Android emulator upgrade/retention checks.
 - Split manual qualification steps into one protected operation per tap.
 
-Unpublished development build. These strict-policy synthetic checks passed;
-broader device, real application migration and release qualification remain
-outstanding. See VALIDATION.md for evidence and exclusions.
+Initial release with limited device qualification. Strict-policy synthetic checks passed;
+broader device and real application migration qualification remain outstanding.
+See [validation](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/VALIDATION.md)
+for evidence and exclusions.

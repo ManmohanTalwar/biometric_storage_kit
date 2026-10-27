@@ -1,7 +1,10 @@
 name: biometric_storage_kit
 description: "Biometric-protected secret storage for DartNative using iOS Keychain and Android Keystore."
-version: 0.1.0-dev.1
-publish_to: none
+version: 0.1.0
+homepage: https://github.com/ManmohanTalwar/biometric_storage_kit
+repository: https://github.com/ManmohanTalwar/biometric_storage_kit
+issue_tracker: https://github.com/ManmohanTalwar/biometric_storage_kit/issues
+publish_to: https://dartpub.dev
 
 environment:
   sdk: ^3.12.0-192.0.dev

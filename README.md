@@ -2,12 +2,13 @@
 
 Biometric-protected UTF-8 secret storage for DartNative on iOS and Android.
 
-**Development version: 0.1.0-dev.1.** Local implementation; not published or
-qualified for a production migration. See [validation](VALIDATION.md) for the
+**Initial release: 0.1.0, with limited device qualification.** Physical iPhone
+Face ID and Android API 34 emulator checks are recorded; this is not full hardware
+certification or qualification for a production migration. See [validation](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/VALIDATION.md) for the
 checks performed and the remaining device/upgrade gates.
 Physical iPhone enforcement and a strict-policy synthetic upgrade from the original
 `biometric_storage 5.0.1` have passed focused checks; full migration/release qualification
-remains open. Reproduction fixtures are in [qualification](qualification/README.md).
+remains open. Reproduction fixtures are in [qualification](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/qualification/README.md).
 
 | Platform | Native path | Protection for new records |
 |---|---|---|
@@ -19,12 +20,13 @@ account recovery decisions, backend identity, or application navigation.
 
 ## Local use
 
-Until a repository and catalogue release are authorized, use a relative path:
+Add the hosted dependency to your app:
 
 ```yaml
 dependencies:
   biometric_storage_kit:
-    path: ../biometric_storage_kit
+    hosted: https://dartpub.dev
+    version: ^0.1.0
 ```
 
 Run `dn pub get` and call the application's generated
@@ -70,7 +72,7 @@ signed application with its own Keychain identity. The included example has a
 **simulator-only** entitlement configuration; a physical-device build needs the
 developer's real signing/provisioning configuration. Do not copy the simulator
 identity into a production device entitlement or change an existing app's access
-groups during migration. See [example setup](example/README.md).
+groups during migration. See [example setup](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/example/README.md).
 
 There is no passcode fallback for new records. Android requires a strong enrolled
 biometric. iOS writes request explicit biometric approval, and reads are enforced
@@ -156,14 +158,14 @@ Flutter and cannot drive DartNative's native UI.
 
 ### Android emulator
 
-![Android biometric write, read and delete](docs/media/android-demo.gif)
+![Android biometric write, read and delete](https://raw.githubusercontent.com/ManmohanTalwar/biometric_storage_kit/main/docs/media/android-demo.gif)
 
 API 34 emulator: separate authenticated write and read, Unicode verification,
 explicit deletion and an absent read.
 
 ### iOS Simulator
 
-![iOS simulated Face ID write, read and delete](docs/media/ios-demo.gif)
+![iOS simulated Face ID write, read and delete](https://raw.githubusercontent.com/ManmohanTalwar/biometric_storage_kit/main/docs/media/ios-demo.gif)
 
 Simulator 26.5: simulated Face ID approves the explicit write, followed by read,
 delete and absence. **This is not proof of Keychain read authentication.** This
@@ -171,12 +173,12 @@ simulator returned the value without a second match, including after cold launch
 [Apple's published Security source](https://github.com/apple-oss-distributions/Security/blob/db15acbe6a7f257a859ad9a3bb86097bfe0679d9/keychain/securityd/SecDbKeychainItemV7.m#L652-L656)
 contains a simulator path that skips ACL-constrained wrapping, consistent with
 that observation; the exact source revision was not matched to this runtime.
-Focused physical-device read enforcement checks are recorded in [validation](VALIDATION.md).
+Focused physical-device read enforcement checks are recorded in [validation](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/VALIDATION.md).
 Enrollment-change and passcode-removal qualification remain open.
 
-[Validation and remaining qualification](VALIDATION.md) ·
-[Example and reproducible checks](example/README.md) ·
-[Implementation contract](PLAN.md) · [Provenance](provenance.json)
+[Validation and remaining qualification](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/VALIDATION.md) ·
+[Example and reproducible checks](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/example/README.md) ·
+[Implementation contract](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/PLAN.md) · [Provenance](https://github.com/ManmohanTalwar/biometric_storage_kit/blob/main/provenance.json)
 
 ## Licence and notices
 
@@ -199,6 +201,20 @@ biometric_storage 5.0.1 was consulted for API and persisted format compatibility
 new implementation is original. Its MIT licence is retained below. Its Android
 CryptographyManager reference additionally credits the Android Open Source Project
 under Apache-2.0 (see LICENSE). No private Orb implementation is copied.
+
+Android native dependencies are resolved by the consuming application and are
+not bundled into this plugin's AAR:
+
+- androidx.annotation:annotation:1.7.1 — Apache-2.0.
+  https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.7.1/annotation-1.7.1.pom
+- androidx.biometric:biometric:1.1.0 — Apache-2.0.
+  https://dl.google.com/dl/android/maven2/androidx/biometric/biometric/1.1.0/biometric-1.1.0.pom
+
+Copyright The Android Open Source Project. The full Apache-2.0 licence accompanies
+this package in LICENSE. These are direct declarations, not a fixed list of all
+transitive versions selected by a consuming app. The Dart ffi dependency is
+resolved separately under its own BSD-3-Clause licence; the DartNative runtime
+is supplied by the consuming developer's licensed SDK, not this plugin.
 
 MIT License
 

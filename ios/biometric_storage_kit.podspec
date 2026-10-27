@@ -11,8 +11,8 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 Biometric-protected secret storage for DartNative using iOS Keychain and Android Keystore.
                        DESC
-  s.homepage         = 'https://dartpub.dev'
-  s.license          = { :file => '../LICENSE' }
+  s.homepage         = 'https://github.com/ManmohanTalwar/biometric_storage_kit'
+  s.license          = { :type => 'Apache-2.0', :file => '../LICENSE' }
   s.author           = 'biometric_storage_kit contributors'
   s.source           = { :path => '.' }
 
