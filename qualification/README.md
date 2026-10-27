@@ -83,3 +83,10 @@ Keep iPhone Mirroring disconnected during physical biometric qualification.
 Mirroring cannot supply the iPhone's biometric-only authentication. Metadata
 queries on ACL-protected records may themselves request biometric approval;
 the negative test always uses its own fresh noninteractive context.
+
+For a read-only consumer restart check, additionally build with
+`--dart-define=QUALIFICATION_PHASE=retention`. That explicit phase reads all
+legacy records and the already copied new record, then returns before any
+isolation precondition or write. Stop and relaunch that same installed artifact
+and repeat the reads. Use a fresh receipt segment for each launch; never count
+an old outcome line as a new completion.

@@ -84,6 +84,13 @@ class _UpgradeState extends State<UpgradeQualification> {
         for (var i = 0; i < 3; i++) {
           if (!await run('legacy-step-$legacyStep', legacy)) return;
         }
+        if (const String.fromEnvironment('QUALIFICATION_PHASE') ==
+            'retention') {
+          await run('restart-new-read', () async {
+            require(await storage.read(fixtureName) == fixtureValue);
+          });
+          return;
+        }
         if (!await run('isolation-before-copy', isolation)) return;
         for (var i = 0; i < 3; i++) {
           if (!await run('copy-step-$copyStep', copyNext)) return;
