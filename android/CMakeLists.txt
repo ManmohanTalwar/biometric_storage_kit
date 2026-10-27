@@ -14,6 +14,7 @@ find_library(log-lib log)
 
 target_link_libraries(biometric_storage_kit
     ${log-lib}
+    dl
 )
 
 # 16 KB page alignment, required by Google Play on Android 15 and later.
