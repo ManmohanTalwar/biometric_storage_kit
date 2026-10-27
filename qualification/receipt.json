@@ -1,0 +1,409 @@
+{
+  "recorded": "2026-10-27",
+  "native_source_commit": "096f9cc",
+  "scope": "Synthetic strict-policy biometric_storage 5.0.1 original-install import and verified-copy qualification; no real app migration or publication.",
+  "ios": {
+    "device_model": "iPhone 13 Pro",
+    "os": "26.6 (23G71)",
+    "build_mode": "Release",
+    "producer_flutter": "3.47.5",
+    "consumer_dartnative": "1.4.0",
+    "artifacts": [
+      {
+        "bundle_id": "dev.dnplugins.biometricUpgradeFixture",
+        "build_number": "1",
+        "signed_app_tree_sha256": "27f8fd628c01e5fccf870ec9b88467177070c35ecb4f472391026e844f1cfc72"
+      },
+      {
+        "bundle_id": "dev.dnplugins.biometricUpgradeFixture",
+        "build_number": "2",
+        "signed_app_tree_sha256": "ddd6179a0eadd3074895497480528ef1349d1622273f5f6888e04269158dc538"
+      }
+    ],
+    "same_application_identifier": true,
+    "same_team": true,
+    "same_explicit_keychain_groups": true,
+    "keychain_group_note": "Neither signed host declares explicit keychain-access-groups; both retain the same application identifier default access group.",
+    "xctest": {
+      "result": "Passed",
+      "passedTests": 2,
+      "failedTests": 0,
+      "skippedTests": 0
+    },
+    "xctest_boundary": "XCTest ran on the initial consumer; the later UI-only consumer rebuild leaves plugin/native sources unchanged. Artifact hash above is the final manual consumer.",
+    "outcomes": [
+      {
+        "case": "legacy-continuity",
+        "passed": true,
+        "utc": "2026-10-27T09:14:27.614899Z"
+      },
+      {
+        "case": "isolation-before-copy",
+        "passed": true,
+        "utc": "2026-10-27T09:14:30.295216Z"
+      },
+      {
+        "case": "verified-copy",
+        "passed": true,
+        "utc": "2026-10-27T09:14:38.122446Z"
+      },
+      {
+        "case": "cancel-legacy-read",
+        "passed": true,
+        "utc": "2026-10-27T09:16:50.975523Z"
+      },
+      {
+        "case": "legacy-continuity",
+        "passed": true,
+        "utc": "2026-10-27T09:25:02.808047Z"
+      },
+      {
+        "case": "isolation-before-copy",
+        "passed": false,
+        "error": "StateError",
+        "utc": "2026-10-27T09:25:08.561966Z"
+      },
+      {
+        "case": "legacy-continuity",
+        "passed": true,
+        "utc": "2026-10-27T09:25:19.825367Z"
+      },
+      {
+        "case": "new-read",
+        "passed": true,
+        "utc": "2026-10-27T09:48:12.010510Z"
+      },
+      {
+        "case": "cancel-replacement",
+        "passed": true,
+        "utc": "2026-10-27T09:48:26.654969Z"
+      },
+      {
+        "case": "new-read",
+        "passed": true,
+        "utc": "2026-10-27T09:48:34.563386Z"
+      },
+      {
+        "case": "legacy-step-0",
+        "passed": true,
+        "utc": "2026-10-27T09:48:56.668269Z"
+      },
+      {
+        "case": "isolation-before-copy",
+        "passed": false,
+        "error": "StateError",
+        "utc": "2026-10-27T09:49:00.178569Z"
+      },
+      {
+        "case": "copy-step-0",
+        "passed": true,
+        "utc": "2026-10-27T09:49:04.067921Z"
+      },
+      {
+        "case": "copy-step-1",
+        "passed": true,
+        "utc": "2026-10-27T09:49:08.349670Z"
+      },
+      {
+        "case": "copy-step-2",
+        "passed": true,
+        "utc": "2026-10-27T09:49:10.775063Z"
+      },
+      {
+        "case": "cancel-legacy-read",
+        "passed": true,
+        "utc": "2026-10-27T09:49:28.233369Z"
+      },
+      {
+        "case": "legacy-step-1",
+        "passed": true,
+        "utc": "2026-10-27T09:49:45.439552Z"
+      },
+      {
+        "case": "immediate-cancel",
+        "passed": true,
+        "utc": "2026-10-27T09:49:47.948717Z"
+      },
+      {
+        "case": "immediate-cancel",
+        "passed": true,
+        "utc": "2026-10-27T09:49:50.335917Z"
+      },
+      {
+        "case": "background-cancel-read",
+        "passed": true,
+        "utc": "2026-10-27T09:50:04.366091Z"
+      },
+      {
+        "case": "background-cancel-read",
+        "passed": false,
+        "error": "StateError",
+        "utc": "2026-10-27T09:50:06.761573Z"
+      },
+      {
+        "case": "new-read",
+        "passed": true,
+        "utc": "2026-10-27T09:50:17.265771Z"
+      },
+      {
+        "case": "new-read",
+        "passed": true,
+        "utc": "2026-10-27T09:54:47.093659Z"
+      },
+      {
+        "case": "legacy-step-0",
+        "passed": true,
+        "utc": "2026-10-27T09:54:55.580358Z"
+      },
+      {
+        "case": "legacy-step-1",
+        "passed": true,
+        "utc": "2026-10-27T09:54:59.478270Z"
+      },
+      {
+        "case": "legacy-step-2",
+        "passed": true,
+        "utc": "2026-10-27T09:55:02.259943Z"
+      },
+      {
+        "case": "background-cancel-read",
+        "passed": true,
+        "utc": "2026-10-27T09:58:42.779645Z"
+      },
+      {
+        "case": "new-read",
+        "passed": true,
+        "utc": "2026-10-27T09:58:52.488808Z"
+      },
+      {
+        "case": "delete-current-only",
+        "passed": true,
+        "utc": "2026-10-27T09:58:59.826700Z"
+      }
+    ],
+    "diagnostic_run": "Mirroring-active run failed with -25293. Identical assertions passed with Mirroring disconnected and device unlocked.",
+    "personal_device_exclusions": [
+      "biometric enrollment changes",
+      "passcode removal",
+      "lockout manipulation"
+    ],
+    "pending": [],
+    "manual_observations": {
+      "read_prompt_count": "User confirmed one Face ID prompt per Read tap.",
+      "cancelled_replacement": "User withheld Face ID for timed replacement cancellation; authenticated reads before and after passed.",
+      "backgrounding": "User confirmed moving the app to Home while authentication was pending, followed by a passing authenticated read."
+    },
+    "nonpass_notes": [
+      {
+        "case": "isolation-before-copy",
+        "utc": [
+          "2026-10-27T09:25:08.561966Z",
+          "2026-10-27T09:49:00.178569Z"
+        ],
+        "disposition": "Rerun after a new copy already existed; the intentionally absent precondition no longer held. Both failures are preserved and not counted as passing checks."
+      },
+      {
+        "case": "background-cancel-read",
+        "utc": "2026-10-27T09:50:06.761573Z",
+        "disposition": "Additional attempt did not establish cancellation. The helper logs StateError for either unexpected success or an unexpected biometric error code; the exact cause is not established. Failure preserved and not counted as cancellation proof. A later controlled background cancellation and authenticated recovery passed at the referenced final outcome timestamps."
+      }
+    ],
+    "cold_process_restart": {
+      "method": "Terminate existing consumer process and launch the same installed artifact; no rebuild, reinstall or data reset.",
+      "outcome_utc": [
+        "2026-10-27T09:54:47.093659Z",
+        "2026-10-27T09:54:55.580358Z",
+        "2026-10-27T09:54:59.478270Z",
+        "2026-10-27T09:55:02.259943Z"
+      ],
+      "user_confirmed": true
+    },
+    "final_background_recovery_and_delete": {
+      "outcome_utc": [
+        "2026-10-27T09:58:42.779645Z",
+        "2026-10-27T09:58:52.488808Z",
+        "2026-10-27T09:58:59.826700Z"
+      ],
+      "user_confirmed_camera_covered_and_home_during_pending_authentication": true,
+      "delete_scope": "Only synthetic new-format Unicode copy removed; missing new record and unchanged legacy Unicode value verified."
+    },
+    "earlier_mirroring_cancellation_note": "The 09:16:50 cancellation row occurred while Mirroring was active; physical camera-withheld cancellation proof uses the later user-observed runs."
+  },
+  "android": {
+    "device": "dedicated API 34 arm64 emulator",
+    "producer_flutter": "3.38.5",
+    "consumer_dartnative": "1.4.0",
+    "build_mode": "Debug",
+    "artifacts": [
+      {
+        "sha256": "6d9ccecd5e21ca1f4bd1c5ff8f838a2ac4311cb3b2d21ca809211b5c75961100",
+        "certificate_sha256": "0619955a002079e3be0e677ae494d09985548dceb00dff768dfee418bfeead7e",
+        "package": "package: name='dev.dnplugins.biometric_upgrade_fixture' versionCode='1' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'"
+      },
+      {
+        "sha256": "49c997039f31d373c32c22bc67303d4681c8ff3da8614a16dcc4ae919be594ab",
+        "certificate_sha256": "0619955a002079e3be0e677ae494d09985548dceb00dff768dfee418bfeead7e",
+        "package": "package: name='dev.dnplugins.biometric_upgrade_fixture' versionCode='2' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'"
+      }
+    ],
+    "legacy_records": {
+      "dn-upgrade.aGVsbG8_": {
+        "sha256": "97fa3b9d4a2253331268572e09688c3f88c7397504ff568fd8ffbd4289d7645c",
+        "bytes": 81
+      },
+      "dn-upgrade-empty": {
+        "sha256": "734d17375e831a3ba145b340f06c44cd8c04b1aa577de5e89d45dcba3352fde8",
+        "bytes": 28
+      },
+      "dn-upgrade-text": {
+        "sha256": "2dbf5c027ba0cfe60e5761538cb95c1270e5665d4a189d292c3fcbe8bcb8fe38",
+        "bytes": 59
+      }
+    },
+    "legacy_hashes_after_upgrade_unchanged": true,
+    "first_install_time_unchanged": true,
+    "producer_outcomes": [
+      {
+        "case": "seed legacy",
+        "passed": true
+      },
+      {
+        "case": "verify legacy",
+        "passed": true
+      }
+    ],
+    "consumer_outcomes": [
+      {
+        "case": "legacy-step-0",
+        "passed": true,
+        "utc": "2026-10-27T09:36:44.917263Z"
+      },
+      {
+        "case": "legacy-step-1",
+        "passed": true,
+        "utc": "2026-10-27T09:36:50.689555Z"
+      },
+      {
+        "case": "legacy-step-2",
+        "passed": true,
+        "utc": "2026-10-27T09:36:55.436365Z"
+      },
+      {
+        "case": "isolation-before-copy",
+        "passed": true,
+        "utc": "2026-10-27T09:36:57.419388Z"
+      },
+      {
+        "case": "copy-step-0",
+        "passed": true,
+        "utc": "2026-10-27T09:37:00.212881Z"
+      },
+      {
+        "case": "copy-step-1",
+        "passed": true,
+        "utc": "2026-10-27T09:37:21.558711Z"
+      },
+      {
+        "case": "copy-step-2",
+        "passed": true,
+        "utc": "2026-10-27T09:37:41.181773Z"
+      },
+      {
+        "case": "new-read",
+        "passed": true,
+        "utc": "2026-10-27T09:37:54.970740Z"
+      }
+    ],
+    "instrumentation": {
+      "passed": 2,
+      "failed": 0,
+      "tests": [
+        "legacy byte retention and authentication-specific decrypt denial",
+        "denial classifier corruption/invalidation/wrong-IV controls"
+      ]
+    },
+    "build_note": "Initial Flutter3.47.5 Android Gradle download stalled; used installed3.38.5 host, retaining original biometric_storage5.0.1 unchanged.",
+    "cold_process_restarts": {
+      "apk_sha256": "6842bbce173029f9a0f405079238c224b80f400a09d52016324882fe5644c707",
+      "runs": [
+        {
+          "launch": 1,
+          "outcomes": [
+            {
+              "case": "legacy-step-0",
+              "passed": true,
+              "utc": "2026-10-27T09:48:30.578109Z"
+            },
+            {
+              "case": "legacy-step-1",
+              "passed": true,
+              "utc": "2026-10-27T09:48:33.895423Z"
+            },
+            {
+              "case": "legacy-step-2",
+              "passed": true,
+              "utc": "2026-10-27T09:48:35.663330Z"
+            },
+            {
+              "case": "restart-new-read",
+              "passed": true,
+              "utc": "2026-10-27T09:48:39.303089Z"
+            }
+          ]
+        },
+        {
+          "launch": 2,
+          "outcomes": [
+            {
+              "case": "legacy-step-0",
+              "passed": true,
+              "utc": "2026-10-27T09:48:45.156725Z"
+            },
+            {
+              "case": "legacy-step-1",
+              "passed": true,
+              "utc": "2026-10-27T09:48:46.902730Z"
+            },
+            {
+              "case": "legacy-step-2",
+              "passed": true,
+              "utc": "2026-10-27T09:48:50.409053Z"
+            },
+            {
+              "case": "restart-new-read",
+              "passed": true,
+              "utc": "2026-10-27T09:48:54.181845Z"
+            }
+          ]
+        }
+      ],
+      "legacy_hashes_unchanged": true,
+      "method": "Install retention build in place, then twice force-stop and start the same installed app. Record outcome line count before each launch and accept only fresh four-case segments; no writes or re-seeding."
+    }
+  },
+  "legacy_options": {
+    "authenticationRequired": true,
+    "authenticationValidityDurationSeconds": -1,
+    "androidBiometricOnly": true,
+    "darwinBiometricOnly": true
+  },
+  "broader_unqualified": [
+    "Touch ID",
+    "enrollment invalidation",
+    "passcode removal",
+    "backup/restore",
+    "alternate legacy policies",
+    "custom access groups",
+    "physical Android",
+    "real application activation/recovery",
+    "original producer rollback/reverification",
+    "process death during mutation",
+    "release artifact and registry consumption"
+  ],
+  "source_revisions": {
+    "original_install_fixtures": "3ea0892",
+    "ios_manual_ui": "7a81ce5",
+    "android_import_and_instrumentation": "697d077",
+    "android_retention": "c1cdb80"
+  }
+}

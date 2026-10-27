@@ -9,6 +9,10 @@
 - Add read-only compatibility for audited biometric_storage 5.0.1 records.
 - Guard native callback generation, prompt ownership, main-thread use and malformed Unicode.
 - Add a synthetic example, API/codec tests and native enforcement probes.
+- Add signed original-install fixtures, physical iPhone enforcement/cancellation/
+  restart checks, and Android emulator upgrade/retention checks.
+- Split manual qualification steps into one protected operation per tap.
 
-Unpublished development build. Physical-device and signed historical-upgrade
-qualification remain outstanding; see VALIDATION.md.
+Unpublished development build. These strict-policy synthetic checks passed;
+broader device, real application migration and release qualification remain
+outstanding. See VALIDATION.md for evidence and exclusions.

@@ -5,6 +5,9 @@ Biometric-protected UTF-8 secret storage for DartNative on iOS and Android.
 **Development version: 0.1.0-dev.1.** Local implementation; not published or
 qualified for a production migration. See [validation](VALIDATION.md) for the
 checks performed and the remaining device/upgrade gates.
+Physical iPhone enforcement and a strict-policy synthetic upgrade from the original
+`biometric_storage 5.0.1` have passed focused checks; full migration/release qualification
+remains open. Reproduction fixtures are in [qualification](qualification/README.md).
 
 | Platform | Native path | Protection for new records |
 |---|---|---|
@@ -168,7 +171,8 @@ simulator returned the value without a second match, including after cold launch
 [Apple's published Security source](https://github.com/apple-oss-distributions/Security/blob/db15acbe6a7f257a859ad9a3bb86097bfe0679d9/keychain/securityd/SecDbKeychainItemV7.m#L652-L656)
 contains a simulator path that skips ACL-constrained wrapping, consistent with
 that observation; the exact source revision was not matched to this runtime.
-Physical-device read, enrollment-change and passcode-removal tests remain required.
+Focused physical-device read enforcement checks are recorded in [validation](VALIDATION.md).
+Enrollment-change and passcode-removal qualification remain open.
 
 [Validation and remaining qualification](VALIDATION.md) ·
 [Example and reproducible checks](example/README.md) ·
