@@ -1,0 +1,21 @@
+{
+  "dn_sdk": "1.4.0",
+  "dn_public_guide_commit": "1be7f977753bf7976c0861b64756cc34aa1b489f",
+  "biometric_storage_reference": {
+    "version": "5.0.1",
+    "disposition": "API and persisted format reference; original implementation, no private Orb code copied",
+    "files_sha256": {
+      "ios/Classes/BiometricStorageImpl.swift": "7ba97a2e1c6f0821ac03d882b4bf616a54304a5c392ecbeb3ab7164fa7442449",
+      "android/src/main/kotlin/design/codeux/biometric_storage/BiometricStorageFile.kt": "6db543335686c1c626875e5afe5d84ed721e362f77e31800c6aa1df181dbbad6",
+      "android/src/main/kotlin/design/codeux/biometric_storage/CryptographyManager.kt": "775e653ab619660c04d421830e9e8cc951ed28bc07bd5221acad400249b7bab2",
+      "LICENSE": "8b99080b008b7e4d84a7dd4857f94e339e56e696c4ece70ac38fd44b4d57c63c"
+    }
+  },
+  "transport_reference": {
+    "package": "quick_actions_kit",
+    "version": "0.1.0",
+    "repository": "https://github.com/ManmohanTalwar/quick_actions_kit",
+    "licence": "Apache-2.0",
+    "disposition": "Reuse original public FFI dispatcher/JNI transport pattern with storage-specific cancellation."
+  }
+}
