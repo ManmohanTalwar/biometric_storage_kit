@@ -1,0 +1,12 @@
+name: biometric_upgrade_fixture
+description: Synthetic original-plugin producer for in-place upgrade qualification.
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  biometric_storage: 5.0.1
+flutter:
+  uses-material-design: true
