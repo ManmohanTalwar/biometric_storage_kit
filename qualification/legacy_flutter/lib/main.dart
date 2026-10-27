@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:biometric_storage/biometric_storage.dart';
 
@@ -28,8 +30,9 @@ class _LegacyFixtureState extends State<LegacyFixture> {
           darwinBiometricOnly: true,
         ),
       );
-  Future<void> run(String label, Future<void> Function() action) async {
-    if (busy) return;
+  Future<bool> run(String label, Future<void> Function() action) async {
+    if (busy) return false;
+    var passed = false;
     setState(() {
       busy = true;
       status = 'Running $label';
@@ -37,12 +40,44 @@ class _LegacyFixtureState extends State<LegacyFixture> {
     try {
       await action();
       status = 'PASS: $label';
+      passed = true;
     } catch (e) {
       status = 'FAIL: $label (${e.runtimeType})';
     }
     // Only case name and outcome; never log a stored value.
     debugPrint('BIOQUAL $status');
+    await File(
+      '${Directory.systemTemp.path}/bioqual-producer.jsonl',
+    ).writeAsString(
+      '${jsonEncode({'case': label, 'passed': passed})}\n',
+      mode: FileMode.append,
+      flush: true,
+    );
     if (mounted) setState(() => busy = false);
+    return passed;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid &&
+        const bool.fromEnvironment('QUALIFICATION_AUTORUN')) {
+      Future<void>.delayed(Duration.zero, () async {
+        final seeded = await run('seed legacy', () async {
+          await (await store(fixtureName)).write(fixtureValue);
+          await (await store(emptyName)).write('');
+          await (await store(textName)).write(textValue);
+        });
+        if (!seeded) return;
+        await run('verify legacy', () async {
+          if (await (await store(fixtureName)).read() != fixtureValue ||
+              await (await store(emptyName)).read() != '' ||
+              await (await store(textName)).read() != textValue) {
+            throw StateError('Legacy value mismatch');
+          }
+        });
+      });
+    }
   }
 
   @override

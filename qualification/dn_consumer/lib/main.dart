@@ -25,8 +25,21 @@ class _UpgradeState extends State<UpgradeQualification> {
   final storage = BiometricStorage(namespace: 'upgrade-qualification');
   var status = 'Ready: DartNative consumer';
   var busy = false;
-  Future<void> run(String name, Future<void> Function() action) async {
-    if (busy) return;
+  var legacyStep = 0;
+  var copyStep = 0;
+  String? stagedCopy;
+  static const legacyLabels = [
+    '1a. Read legacy Unicode',
+    '1b. Read legacy empty',
+    '1c. Read legacy text',
+  ];
+  static const copyLabels = [
+    '3a. Read source for copy',
+    '3b. Write new copy',
+    '3c. Verify new copy',
+  ];
+  Future<bool> run(String name, Future<void> Function() action) async {
+    if (busy) return false;
     setState(() {
       busy = true;
       status = 'Running $name';
@@ -59,6 +72,27 @@ class _UpgradeState extends State<UpgradeQualification> {
     status =
         '${passed ? 'PASS' : 'FAIL'}: $name${code == null ? '' : ' ($code)'}';
     if (mounted) setState(() => busy = false);
+    return passed;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid &&
+        const bool.fromEnvironment('QUALIFICATION_AUTORUN')) {
+      Future<void>.delayed(Duration.zero, () async {
+        for (var i = 0; i < 3; i++) {
+          if (!await run('legacy-step-$legacyStep', legacy)) return;
+        }
+        if (!await run('isolation-before-copy', isolation)) return;
+        for (var i = 0; i < 3; i++) {
+          if (!await run('copy-step-$copyStep', copyNext)) return;
+        }
+        await run('new-read', () async {
+          require(await storage.read(fixtureName) == fixtureValue);
+        });
+      });
+    }
   }
 
   void require(bool condition) {
@@ -66,12 +100,43 @@ class _UpgradeState extends State<UpgradeQualification> {
   }
 
   Future<void> legacy() async {
-    require(await storage.readLegacyFlutter(fixtureName) == fixtureValue);
-    require(await storage.readLegacyFlutter(emptyName) == '');
-    require(await storage.readLegacyFlutter(textName) == textValue);
+    final names = [fixtureName, emptyName, textName];
+    final values = [fixtureValue, '', textValue];
+    require(
+      await storage.readLegacyFlutter(names[legacyStep]) == values[legacyStep],
+    );
+    legacyStep = (legacyStep + 1) % names.length;
+  }
+
+  Future<void> isolation() async {
+    require(await storage.read(fixtureName) == null);
+    require(await storage.read(emptyName) == null);
     require(
       await storage.readLegacyFlutter('dn-upgrade-never-created') == null,
     );
+    final other = BiometricStorage(namespace: 'upgrade-other');
+    try {
+      require(await other.read(fixtureName) == null);
+    } finally {
+      other.dispose();
+    }
+  }
+
+  Future<void> copyNext() async {
+    if (copyStep == 0) {
+      final old = await storage.readLegacyFlutter(fixtureName);
+      require(old == fixtureValue);
+      stagedCopy = old;
+      copyStep = 1;
+    } else if (copyStep == 1) {
+      require(stagedCopy == fixtureValue);
+      await storage.write(fixtureName, stagedCopy!);
+      stagedCopy = null;
+      copyStep = 2;
+    } else {
+      require(await storage.read(fixtureName) == fixtureValue);
+      copyStep = 0;
+    }
   }
 
   Future<void> cancelled(
@@ -92,7 +157,10 @@ class _UpgradeState extends State<UpgradeQualification> {
   }
 
   Widget button(String title, String name, Future<void> Function() action) =>
-      ElevatedButton(onPressed: () => run(name, action), child: Text(title));
+      ElevatedButton(
+        onPressed: busy ? null : () => run(name, action),
+        child: Text(title),
+      );
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Storage upgrade checks')),
@@ -101,29 +169,24 @@ class _UpgradeState extends State<UpgradeQualification> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Text('Synthetic records only. No legacy writes or deletes.'),
+            const Text('Synthetic records only. One operation per tap.'),
+            const Text(
+              'Face ID pauses app interaction until you approve or cancel.',
+            ),
             Text(status),
-            button('1. Verify imported records', 'legacy-continuity', legacy),
+            if (busy)
+              ElevatedButton(
+                onPressed: storage.cancelPending,
+                child: const Text('Cancel current check'),
+              ),
+            const SizedBox(height: 12),
+            button(legacyLabels[legacyStep], 'legacy-step-$legacyStep', legacy),
             button(
               '2. Check isolation before copy',
               'isolation-before-copy',
-              () async {
-                require(await storage.read(fixtureName) == null);
-                require(await storage.read(emptyName) == null);
-                final other = BiometricStorage(namespace: 'upgrade-other');
-                try {
-                  require(await other.read(fixtureName) == null);
-                } finally {
-                  other.dispose();
-                }
-              },
+              isolation,
             ),
-            button('3. Copy and verify new storage', 'verified-copy', () async {
-              final old = await storage.readLegacyFlutter(fixtureName);
-              require(old == fixtureValue);
-              await storage.write(fixtureName, old!);
-              require(await storage.read(fixtureName) == fixtureValue);
-            }),
+            button(copyLabels[copyStep], 'copy-step-$copyStep', copyNext),
             button('4. Read new record', 'new-read', () async {
               require(await storage.read(fixtureName) == fixtureValue);
             }),

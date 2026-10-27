@@ -30,8 +30,10 @@ safe dotted/base64URL-shaped name. Their values are synthetic and public.
 3. Install the producer. Create and verify all three records through its UI and
    real biometric prompts. Preserve pass/fail output. On Android record file
    hashes/lengths and package UID/first-install time before the update.
-4. Install the DN consumer in place. Run cases 1 and 2 (legacy verification and
-   absence of new-format copies) before case 3 explicitly copies and verifies.
+4. Install the DN consumer in place. Run all three manual steps 1a/1b/1c, then case 2 (absence of new-format copies)
+   before steps 3a/3b/3c explicitly read, copy and verify. Each manual tap starts
+   at most one protected operation; other controls visibly disable while busy
+   and a cancel control is available.
 5. Run hosted iOS XCTest from `ios/KeychainEnforcementTests.swift` after case 3
    and **before case 9**. It requires real existing protected records. A fresh
    noninteractive context must return errSecInteractionNotAllowed with no data,
@@ -58,3 +60,26 @@ invalidation, passcode removal, Touch ID, lockout, backup/restore, alternative
 legacy policies and real application activation remain separate qualification.
 These fixture sources and instructions are preparation, not evidence of a pass;
 executed results belong in the root VALIDATION.md.
+
+## Automation and proof boundaries
+
+Android-only automation is explicitly enabled at build time with
+`--dart-define=QUALIFICATION_AUTORUN=true`. It runs the producer seed/verify or
+consumer import/isolation/copy/read sequence. Use the dedicated emulator's
+synthetic enrolled fingerprint. Capture `bioqual-producer.jsonl` /
+`bioqual-results.jsonl` from the actual `Directory.systemTemp` location (Flutter
+3.38.5 uses `code_cache` in this run, not `cache`). Stop on any failed outcome.
+A producer rebuilt at version 3 for a preservation check must have autorun
+**disabled**, and only Verify may be invoked: re-seeding would invalidate proof.
+
+`android/LegacyEnforcementTest.kt` is an API 33+ hosted instrumentation test.
+Supply each original record's SHA-256 as the test-runner argument keyed by its
+exact name. The test requires byte-identical original files, per-use strong
+biometric keys and an explicit authentication-required exception on an attempted
+unauthenticated decrypt. Corruption, invalidation and malformed-IV exceptions
+must fail; the classifier has negative controls for those cases.
+
+Keep iPhone Mirroring disconnected during physical biometric qualification.
+Mirroring cannot supply the iPhone's biometric-only authentication. Metadata
+queries on ACL-protected records may themselves request biometric approval;
+the negative test always uses its own fresh noninteractive context.
