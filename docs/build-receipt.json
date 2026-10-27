@@ -1,0 +1,18 @@
+{
+  "package": "biometric_storage_kit",
+  "version": "0.1.0-dev.1",
+  "builder": "DartNative 1.4.0 dn plugin build",
+  "published": false,
+  "native_source_commit": "096f9cc",
+  "binary_archive": {
+    "name": "biometric_storage_kit-0.1.0-dev.1.tar.gz",
+    "sha256": "3522742ce17f1c8f7afad6d2fd7f903b11b5094b372931d085b156d7fe4232f2",
+    "bytes": 301675
+  },
+  "source_archive": {
+    "name": "biometric_storage_kit-0.1.0-dev.1-source.tar.gz",
+    "sha256": "a1cb2be0056e2e281034dfc23b39297a1f0d1c390fe8ce99c081d5b24bef8ba8"
+  },
+  "notice_check": "Both archives passed tool/check_distribution.py; original notices retained",
+  "distribution_limit": "Public README document/media URLs must be resolved before catalogue publication"
+}

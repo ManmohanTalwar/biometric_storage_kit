@@ -40,7 +40,9 @@ Face ID in Simulator's Features menu. Simulated enrollment is not physical proof
 - `Check immediate cancellation`: delete an isolated synthetic probe record,
   request a write and dispose in the same Dart turn, then verify cancellation
   and absence. No prompt or write should occur.
-- Store and read the Unicode demo value. Every read/write needs authentication.
+- Store and read the Unicode demo value. Android prompts for each operation.
+  iOS Simulator demonstrates the explicit write prompt but does not qualify
+  Keychain ACL enforcement; see the root validation record.
 - Cancel a read: no new value should appear. Cancel a replacement: the existing
   stored value must remain. Read again with authentication to verify it.
 - Background during a prompt, resume, and perform a fresh operation.

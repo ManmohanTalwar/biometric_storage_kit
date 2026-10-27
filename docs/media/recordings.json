@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-27",
+  "synthetic_data_only": true,
+  "clean_dedicated_devices": true,
+  "android": {
+    "file": "android-demo.gif",
+    "device": "Pixel 6 Pro API 34 arm64 emulator",
+    "recording": "Emulator host screenrecord",
+    "flow": "biometric write, independently authenticated read, Unicode result, delete, absent read",
+    "sha256": "d3495dc1fe8d0e1cbfa9eac3c79432156c1d6c0d30c3105d6d6ad68117f326a2"
+  },
+  "ios": {
+    "file": "ios-demo.gif",
+    "device": "iPhone 17 Pro iOS 26.5 arm64 Simulator",
+    "recording": "RocketSim",
+    "flow": "explicit write Face ID, read, delete, absent read",
+    "limit": "Simulator read did not require a second match; physical Keychain ACL enforcement is unverified",
+    "sha256": "705fd3e58ebe8248daa9cae6d7f8a56aa4f2e75074e560024891e355054c2f33"
+  }
+}
