@@ -1,11 +1,13 @@
-# Validation — 0.1.0-dev.1
+# Validation — 0.1.0
 
-Updated 2026-10-27. This independent package is implemented locally under
-Apache-2.0. It has no Git remote and has not been published. It does not integrate
-with Orb or qualify an existing-user migration. Native source is at `096f9cc`;
-the original synthetic example/probes are at `aee97e9`. The later separate
-qualification fixtures and outcome receipt are under [qualification](qualification/README.md).
-Production native code is unchanged by this qualification batch.
+Updated 2026-10-27. Version 0.1.0 is an initial release with limited device
+qualification, explicitly accepted by the user. Public source is at
+[GitHub](https://github.com/ManmohanTalwar/biometric_storage_kit). It does not
+integrate with Orb or qualify a production migration. Native source is at
+`096f9cc`; later qualification fixtures and receipts are under
+[qualification](qualification/README.md). Production native code is unchanged.
+Final catalogue upload and downloaded-consumer results are recorded separately
+below and in [the release receipt](docs/release-0.1.0.json).
 
 ## Environment
 
@@ -186,6 +188,56 @@ These are historical local qualification outputs, not published registry artifac
 or hashes of the current complete source tree. Rebuild and recheck the release
 artifacts after the final metadata and documentation are selected.
 
+## Release checks and accepted scope
+
+The user confirmed no physical Android phone is available and kept the personal
+iPhone security settings unchanged. The user explicitly selected publication as
+**0.1.0**, with the remaining hardware/migration limitations documented. The
+version number does not imply those tests passed.
+
+- Fresh official binary/source builds succeeded. Independent archive inspection
+  verified all expected iOS architectures, Android ABIs, C/JNI entry points,
+  Android 16 KB ELF/APK alignment, required notices, and absence of machine paths
+  in payloads. Full Git history was inspected for credential/build/private-source
+  leakage; no targeted matches were found.
+- A consumer assembled from packaged native libraries, with no native source,
+  built in Android Release with R8/resource shrinking. The actual DEX retains
+  the required JNI bridge and all seven methods. Two cold launches each read
+  all three original records and the existing new copy. A subsequent Release
+  fixture passed write/read, exact timed cancellation of a replacement, retained
+  value, deletion/absence and a final original legacy read.
+- The same prebuilt-library consumer built in iOS Release. Signature, Face ID
+  declaration, all three linked entry points and XCFramework selection passed.
+  Installed in place on the personal iPhone, its fresh outcome file confirms
+  one original Unicode read at 11:40:32 UTC; the user confirmed one Face ID prompt.
+  This adds a packaged-library witness to the earlier physical test suite.
+- Android AAR and all Dart bindings in the versioned artifact match the tested
+  development archive byte-for-byte. iOS object comparison found only the
+  16-byte LLVM Swift module hash section and static-archive timestamps changed;
+  instruction/data/relocation/symbol bytes match. Complete `.a` file hashes are
+  therefore not described as identical to the earlier tested artifact.
+- The resolved Android plugin dependency subtree contained 49 Maven components
+  with Apache-2.0 POM declarations in this build. Declared annotation 1.7.1 resolves
+  to annotation/annotation-jvm 1.8.1 in this consumer; biometric resolves to 1.1.0.
+  These are external consumer dependencies, not bundled in this plugin AAR.
+  The manifest's additive licence metadata records the two declared coordinates,
+  not a promise that every future consumer resolves this exact graph.
+
+DartNative 1.4.0's generated consumer podspec incorrectly hardcodes Commercial
+licensing and DartNative authorship. [The release procedure](docs/releasing.md)
+corrects only that metadata and adds declared Maven licence metadata, preserving
+every native payload byte. The exact reviewed archive and normalized manifest
+must be uploaded through the installed CLI's source-backed protocol; normal
+`dn plugin publish` would rebuild and lose the correction. No SDK files changed.
+The metadata/source mismatch regression checks pass (seven Python tests).
+Three read-only reviewers covered Android/R8, iOS/artifact equivalence, and
+publication/source coherence; findings were independently closed. Reviewer
+elapsed/token telemetry is unavailable.
+
+Catalogue upload and clean downloaded-consumer checks are pending at this
+pre-publication checkpoint. No claim of registry publication follows from the
+local build or website registration alone.
+
 ## Reproduce / remaining gates
 
 See [example README](example/README.md) for native run and instrumentation commands.
@@ -209,10 +261,10 @@ Still required before production migration/release qualification:
 - Process death during mutation, storage-full/I/O failure, crash/power-loss
   durability, repeated native host/isolate recreation and full prompt teardown
   interleavings. Cross-process use is not supported/qualified.
-- Release-mode consumer/minifier checks and registry download/consumer tests.
-- User-authorized repository/metadata/catalogue setup; resolve README document
-  and media URLs for registry artifacts that do not include those directories.
+- Clean registry download/consumer verification remains pending until publication;
+  local prebuilt Release/minifier checks passed above.
+- Catalogue upload and final public version/checksum verification. Repository
+  delivery and publication are authorized; README document/media URLs are public.
 
-No default secret rotation, legacy deletion, wallet migration, or publication is
-performed. `device_keys_kit` remains an optional separate signing capability,
+No default secret rotation, legacy deletion or wallet migration is performed. `device_keys_kit` remains an optional separate signing capability,
 not a dependency of this package.

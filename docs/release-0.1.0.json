@@ -1,0 +1,158 @@
+{
+  "package": "biometric_storage_kit",
+  "version": "0.1.0",
+  "published": false,
+  "release_scope": "Initial release; physical Android and destructive iOS security-setting checks excluded by explicit user decision",
+  "prebuilt_android_restarts": {
+    "apk_sha256": "c24ec46c16644908ade2816d9b349427d2d7b993129e8b0c7214978f48020c67",
+    "mode": "Release with R8",
+    "runs": [
+      {
+        "launch": 1,
+        "outcomes": [
+          {
+            "case": "legacy-step-0",
+            "passed": true,
+            "utc": "2026-10-27T11:33:37.545031Z"
+          },
+          {
+            "case": "legacy-step-1",
+            "passed": true,
+            "utc": "2026-10-27T11:33:39.093754Z"
+          },
+          {
+            "case": "legacy-step-2",
+            "passed": true,
+            "utc": "2026-10-27T11:33:40.663773Z"
+          },
+          {
+            "case": "restart-new-read",
+            "passed": true,
+            "utc": "2026-10-27T11:33:42.210856Z"
+          }
+        ]
+      },
+      {
+        "launch": 2,
+        "outcomes": [
+          {
+            "case": "legacy-step-0",
+            "passed": true,
+            "utc": "2026-10-27T11:33:44.976555Z"
+          },
+          {
+            "case": "legacy-step-1",
+            "passed": true,
+            "utc": "2026-10-27T11:33:46.527701Z"
+          },
+          {
+            "case": "legacy-step-2",
+            "passed": true,
+            "utc": "2026-10-27T11:33:48.094193Z"
+          },
+          {
+            "case": "restart-new-read",
+            "passed": true,
+            "utc": "2026-10-27T11:33:49.661267Z"
+          }
+        ]
+      }
+    ]
+  },
+  "prebuilt_android_mutations": {
+    "apk_sha256": "2885491b1987abb8d4ca0f14140f8f7eb4ebce6c98c08f8dc433135e2e43e7cb",
+    "mode": "Release with R8",
+    "outcomes": [
+      {
+        "case": "legacy-step-0",
+        "passed": true,
+        "utc": "2026-10-27T11:51:21.415878Z"
+      },
+      {
+        "case": "legacy-step-1",
+        "passed": true,
+        "utc": "2026-10-27T11:51:22.990415Z"
+      },
+      {
+        "case": "legacy-step-2",
+        "passed": true,
+        "utc": "2026-10-27T11:51:25.644122Z"
+      },
+      {
+        "case": "release-clean-start",
+        "passed": true,
+        "utc": "2026-10-27T11:51:25.739817Z"
+      },
+      {
+        "case": "release-write",
+        "passed": true,
+        "utc": "2026-10-27T11:51:28.193715Z"
+      },
+      {
+        "case": "release-read",
+        "passed": true,
+        "utc": "2026-10-27T11:51:30.310783Z"
+      },
+      {
+        "case": "release-cancel-replacement",
+        "passed": true,
+        "utc": "2026-10-27T11:51:35.351159Z"
+      },
+      {
+        "case": "release-retained-read",
+        "passed": true,
+        "utc": "2026-10-27T11:51:37.489180Z"
+      },
+      {
+        "case": "release-delete",
+        "passed": true,
+        "utc": "2026-10-27T11:51:38.600266Z"
+      },
+      {
+        "case": "release-legacy-preserved",
+        "passed": true,
+        "utc": "2026-10-27T11:51:40.381628Z"
+      }
+    ]
+  },
+  "prebuilt_ios": {
+    "bundle_id": "dev.dnplugins.biometricUpgradeFixture",
+    "build": "3",
+    "signed": true,
+    "face_id_description_present": true,
+    "exports": [
+      "_DNBiometricStorageKitInitialize",
+      "_DNBiometricStorageKitRequest",
+      "_DNBiometricStorageKitCancel"
+    ],
+    "executable_sha256": "29776fc3df2ec4fae77f42567aa1b6fcd984593a3d7f95227c36bd83ab03f437"
+  },
+  "prebuilt_ios_fresh_result": {
+    "case": "legacy-step-0",
+    "passed": true,
+    "utc": "2026-10-27T11:40:32.654804Z"
+  },
+  "user_observation": "PASS with one Face ID prompt",
+  "registry_consumer": "Pending",
+  "artifacts": {
+    "package": "biometric_storage_kit",
+    "version": "0.1.0",
+    "owner": "ManmohanTalwar",
+    "input_sha256": "54092d83b9e57298cc6c3729d466c430fbbfddf58e6f00a49c865624754a66e4",
+    "reviewed_sha256": "88f73250318b8c5dbc2983e0a0d01bed23243461470dd59b85d347f48d8b2118",
+    "source_archive_sha256": "01fb6e16df35b9e9e1d07678275b0f9b380d9142cdd459e2b63656b9d9628b45",
+    "changed_members": [
+      "biometric_storage_kit-0.1.0/biometric_storage_kit.podspec",
+      "biometric_storage_kit-0.1.0/manifest.json"
+    ],
+    "correction": "Apache-2.0 licence, contributor attribution and additive direct-dependency licence metadata; DN 1.4.0 generated metadata workaround",
+    "native_payloads_unchanged": {
+      "biometric_storage_kit-0.1.0/android/biometric_storage_kit.aar": "71447e4f87b8388efef00ccea54d6cd22431485036d199e3eb14787ba5b2751a",
+      "biometric_storage_kit-0.1.0/android/build.gradle": "1a0c6d15fd9a8dd00346d581b4b03aa632378c27c2a9862538da76ce5a7d613f",
+      "biometric_storage_kit-0.1.0/ios/biometric_storage_kit.xcframework/Info.plist": "da1f694f10a9f457e03da7cbfa4d39d3f0ad2f1d0207c1061e6768941437a66a",
+      "biometric_storage_kit-0.1.0/ios/biometric_storage_kit.xcframework/ios-arm64/libbiometric_storage_kit.a": "c3d5aa61c1d4daadbed2a06a7afb3c1fe5130b183ace19172955a42c1e6e0351",
+      "biometric_storage_kit-0.1.0/ios/biometric_storage_kit.xcframework/ios-arm64_x86_64-simulator/libbiometric_storage_kit.a": "bfdc39aa22e836e0f563807aef520c1d12e109e8884034da81157822f720e4cd"
+    },
+    "published": false
+  }
+}
