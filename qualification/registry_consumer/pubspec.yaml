@@ -1,0 +1,12 @@
+name: biometric_registry_check
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.12.0-192.0.dev
+dependencies:
+  dartnative: ^1.0.0
+  dartnative_ios: ^1.0.0
+  dartnative_android: ^1.0.0
+  biometric_storage_kit:
+    hosted: https://dartpub.dev
+    version: ^0.1.0
